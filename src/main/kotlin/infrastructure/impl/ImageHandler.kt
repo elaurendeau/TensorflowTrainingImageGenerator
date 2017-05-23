@@ -3,8 +3,10 @@ package infrastructure.impl
 import domain.poco.Position
 import domain.poco.Text
 import infrastructure.IImageHandler
+import org.springframework.stereotype.Service
 import java.awt.image.BufferedImage
 
+@Service
 class ImageHandler : IImageHandler {
     override fun writeTextOnImageAtSpecificPosition(image: BufferedImage, position: Position, text: Text): BufferedImage {
         val graphicImage = image.createGraphics()
