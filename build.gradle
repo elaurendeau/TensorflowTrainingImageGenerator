@@ -19,6 +19,9 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    ivy {
+        url "https://artifacts.alfresco.com/nexus/content/repositories/public"
+    }
 }
 
 dependencies {
@@ -27,7 +30,7 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     // https://mvnrepository.com/artifact/org.springframework/spring-context
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework/spring-core
+// https://mvnrepository.com/artifact/org.springframework/spring-core
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
 
 }

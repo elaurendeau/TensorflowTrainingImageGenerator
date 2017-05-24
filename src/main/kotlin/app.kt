@@ -1,4 +1,5 @@
 import `interface`.controller.ImageController
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.awt.Color
 import java.awt.Font
 import java.awt.font.FontRenderContext
@@ -18,7 +19,12 @@ fun main(args: Array<String>) {
 //
 //    val byteArrayOutputStream = ByteArrayOutputStream();
 //    ImageIO.write(img, "png", byteArrayOutputStream);
-//    FileOutputStream("test.png").write(byteArrayOutputStream.toByteArray());
-    ImageController.run("https://images2.onionstatic.com/clickhole/3564/7/original/600.jpg");
+//    FileOutputStream("test.png").write(byteArrayOutputStream.toByteArray());o
+
+    val applicationContext = AnnotationConfigApplicationContext(AppConfig::class.java)
+
+    val imageController: ImageController = applicationContext.getBean("imageController") as ImageController
+
+    imageController.run("https://images2.onionstatic.com/clickhole/3564/7/original/600.jpg");
 
 }
