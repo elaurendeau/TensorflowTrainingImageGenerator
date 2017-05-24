@@ -1,5 +1,6 @@
 package `interface`.controller
 
+import com.mifmif.common.regex.Generex
 import domain.poco.Position
 import domain.poco.Text
 import infrastructure.IImageHandler
