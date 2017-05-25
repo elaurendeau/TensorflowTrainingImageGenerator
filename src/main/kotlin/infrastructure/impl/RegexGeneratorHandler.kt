@@ -2,12 +2,15 @@ package infrastructure.impl
 
 import com.mifmif.common.regex.Generex
 import infrastructure.IRegexGeneratorHandler
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
-@Component
-class RegexGeneratorHandler: IRegexGeneratorHandler {
+@Service
+class RegexGeneratorHandler : IRegexGeneratorHandler {
+    override fun generateNStringFromRegex(regex: String, occurrence: Int): List<String> {
+        return Generex(regex).getMatchedStrings(occurrence)
+    }
+
     override fun generateStringFromRegex(regex: String): String {
-        val generex = Generex(regex)
-        return generex.random()
+        return Generex(regex).random()
     }
 }

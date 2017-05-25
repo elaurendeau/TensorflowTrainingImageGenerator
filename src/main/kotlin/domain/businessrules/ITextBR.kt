@@ -1,4 +1,4 @@
-package domain.businessrule
+package domain.businessrules
 
 import domain.poco.Text
 import java.awt.Color
