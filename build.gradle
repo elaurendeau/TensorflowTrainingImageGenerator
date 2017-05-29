@@ -34,6 +34,7 @@ dependencies {
 // https://mvnrepository.com/artifact/org.springframework/spring-core
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
     compile 'com.github.mifmif:Generex:1.0.0'
+    compile 'com.github.kostaskougios:cloning:1.7.9'
 
 }
 
