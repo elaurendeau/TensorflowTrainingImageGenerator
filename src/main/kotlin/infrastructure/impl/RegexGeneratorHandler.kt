@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class RegexGeneratorHandler : IRegexGeneratorHandler {
+    override fun generateStringFromRegex(regex: String): String {
+        return Generex(regex).random()
+    }
 
     companion object {
         val EXCEPTION_MESSAGE_INFINITE_POSSIBILITIES = "Infinite possibilities to match every occurrence of the regex [%s]"

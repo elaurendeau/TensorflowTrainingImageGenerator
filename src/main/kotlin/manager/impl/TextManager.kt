@@ -12,6 +12,13 @@ import java.util.concurrent.ThreadLocalRandom
 
 @Service
 open class TextManager @Autowired constructor(val regexGeneratorHandler: IRegexGeneratorHandler, val fontHandler: IFontHandler) : ITextManager {
+    override fun generateTextFromRegex(regex: String): Text {
+        val fontList = generateFonts()
+        val colorList = generateColors()
+        val generatedString = regexGeneratorHandler.generateStringFromRegex(regex)
+
+        return Text(generatedString, fontList[ThreadLocalRandom.current().nextInt(fontList.size)], colorList[ThreadLocalRandom.current().nextInt(colorList.size)])
+    }
 
     companion object {
         val FONT_DECORATION = listOf(Font.BOLD, Font.PLAIN, Font.ITALIC)
@@ -156,15 +163,6 @@ open class TextManager @Autowired constructor(val regexGeneratorHandler: IRegexG
                 "#FFB6C1")
     }
 
-    override fun generateTextFromRegex(regex: String, occurrence: Int): List<Text> {
-        val generatedStringList = regexGeneratorHandler.generateNStringFromRegex(regex, occurrence)
-        val fontList = generateFonts()
-        val colorList = generateColors()
-
-        return generatedStringList.map {
-            Text(it, fontList[ThreadLocalRandom.current().nextInt(fontList.size)], colorList[ThreadLocalRandom.current().nextInt(colorList.size)])
-        }
-    }
     private fun generateFonts(): List<Font> {
         return fontHandler.getFontNames().map {
             Font(it, FONT_DECORATION[ThreadLocalRandom.current().nextInt(FONT_DECORATION.size)], ThreadLocalRandom.current().nextInt(FONT_SIZE_MIN, FONT_SIZE_MAX))
