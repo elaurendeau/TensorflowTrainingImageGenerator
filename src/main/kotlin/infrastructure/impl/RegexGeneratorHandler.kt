@@ -6,11 +6,19 @@ import org.springframework.stereotype.Service
 
 @Service
 class RegexGeneratorHandler : IRegexGeneratorHandler {
-    override fun generateNStringFromRegex(regex: String, occurrence: Int): List<String> {
-        return Generex(regex).getMatchedStrings(occurrence)
+
+    companion object {
+        val EXCEPTION_MESSAGE_INFINITE_POSSIBILITIES = "Infinite possibilities to match every occurrence of the regex [%s]"
     }
 
-    override fun generateStringFromRegex(regex: String): String {
-        return Generex(regex).random()
+    override fun generateNStringFromRegex(regex: String, occurrence: Int): List<String> {
+        val generex = Generex(regex)
+        generex.setSeed(System.currentTimeMillis())
+
+        if(generex.isInfinite && occurrence == 0) {
+            throw StackOverflowError(EXCEPTION_MESSAGE_INFINITE_POSSIBILITIES.format(regex))
+        }
+
+        return if(occurrence == 0) generex.allMatchedStrings else generex.getMatchedStrings(occurrence)
     }
 }

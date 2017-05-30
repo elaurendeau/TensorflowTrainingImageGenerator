@@ -1,3 +1,3 @@
-package `interface`.controller.poco
+package domain
 
 data class FileRequest(val path: String) : Request()

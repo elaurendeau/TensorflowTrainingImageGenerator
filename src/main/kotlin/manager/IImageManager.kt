@@ -1,9 +1,9 @@
-package usecase
+package manager
 
-import domain.poco.Position
-import domain.poco.Text
+import domain.Position
+import domain.Text
 import java.awt.image.BufferedImage
 
-interface IImageUC {
+interface IImageManager {
     fun appendLabelsToImage(image: BufferedImage, labels: List<Pair<Text, Position>>): List<Pair<BufferedImage, Text>>
 }

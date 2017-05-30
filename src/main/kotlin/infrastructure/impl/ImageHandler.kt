@@ -1,7 +1,7 @@
 package infrastructure.impl
 
-import domain.poco.Position
-import domain.poco.Text
+import domain.Position
+import domain.Text
 import infrastructure.IImageHandler
 import org.springframework.stereotype.Service
 import java.awt.image.BufferedImage

@@ -1,4 +1,4 @@
-import `interface`.controller.ImageController
+import controller.ImageController
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 fun main(args: Array<String>) {

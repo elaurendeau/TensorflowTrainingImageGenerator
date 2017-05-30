@@ -1,10 +1,10 @@
-package usecase
+package service
 
-import `interface`.controller.poco.Request
-import domain.poco.Text
+import domain.Request
+import domain.Text
 import java.awt.image.BufferedImage
 
-interface IResultUC {
+interface IResultService {
     fun generateResult(request: Request, imageTextList: List<Pair<BufferedImage, Text>>): Unit
 
 }
