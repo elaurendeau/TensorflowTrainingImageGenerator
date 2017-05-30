@@ -1,5 +1,6 @@
 package service
 
+import domain.Request
 import java.awt.image.BufferedImage
 
 interface ILabelGeneratorService {
@@ -13,5 +14,5 @@ interface ILabelGeneratorService {
      *
      * @return {@link List}<{@link Pair}<{@link Text}, {@link Position}>>
      */
-    fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, path: String): Unit
+    fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, path: String, request: Request): Unit
 }

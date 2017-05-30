@@ -7,6 +7,6 @@ fun main(args: Array<String>) {
 
     val imageController: ImageController = applicationContext.getBean("imageController") as ImageController
 
-    imageController.run("https://images2.onionstatic.com/clickhole/3564/7/original/600.jpg", "d:\\tmp\\testdata", "[A-Z]{1,1}", 10)
+    imageController.run("https://images2.onionstatic.com/clickhole/3564/7/original/600.jpg", "d:\\tmp\\testdata", "[A-Z]{2,4}", 10000)
 
 }

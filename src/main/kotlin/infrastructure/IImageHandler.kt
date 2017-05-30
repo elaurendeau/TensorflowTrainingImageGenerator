@@ -20,5 +20,7 @@ interface IImageHandler {
      * @return {@link BufferedImage}
      */
     fun writeTextOnImageAtSpecificPosition(image: BufferedImage, position: Position, text: Text): BufferedImage
+
+    fun copyImage(image: BufferedImage): BufferedImage
 }
 

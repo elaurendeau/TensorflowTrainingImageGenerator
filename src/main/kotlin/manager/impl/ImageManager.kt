@@ -16,10 +16,7 @@ import java.util.concurrent.ThreadLocalRandom
 
 @Service
 class ImageManager @Autowired constructor(val imageHandler: IImageHandler) : IImageManager {
-    override fun appendLabelsToImage(image: BufferedImage, labels: List<Pair<Text, Position>>): List<Pair<BufferedImage, Text>> {
-        val cloner = Cloner()
-        return labels.map {
-            Pair(imageHandler.writeTextOnImageAtSpecificPosition(cloner.deepClone(image), it.second, it.first), it.first)
-        }
+    override fun appendLabelToImage(image: BufferedImage, label: Pair<Text, Position>): Pair<BufferedImage, Text> {
+        return Pair(imageHandler.writeTextOnImageAtSpecificPosition(imageHandler.copyImage(image), label.second, label.first), label.first)
     }
 }
