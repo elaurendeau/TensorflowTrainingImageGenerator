@@ -12,9 +12,20 @@ import java.util.concurrent.ThreadLocalRandom
 
 @Service
 open class TextManager @Autowired constructor(val regexGeneratorHandler: IRegexGeneratorHandler, val fontHandler: IFontHandler) : ITextManager {
+
+    val fontList: List<Font> by lazy {
+        fontHandler.getFontNames().map {
+            Font(it, FONT_DECORATION[ThreadLocalRandom.current().nextInt(FONT_DECORATION.size)], ThreadLocalRandom.current().nextInt(FONT_SIZE_MIN, FONT_SIZE_MAX))
+        }.toList()
+    }
+
+    val colorList: List<Color> by lazy {
+        COLOR_CODE_LIST.map {
+            Color.decode(it)
+        }
+    }
+
     override fun generateTextFromRegex(regex: String): Text {
-        val fontList = generateFonts()
-        val colorList = generateColors()
         val generatedString = regexGeneratorHandler.generateStringFromRegex(regex)
 
         return Text(generatedString, fontList[ThreadLocalRandom.current().nextInt(fontList.size)], colorList[ThreadLocalRandom.current().nextInt(colorList.size)])
@@ -161,18 +172,6 @@ open class TextManager @Autowired constructor(val regexGeneratorHandler: IRegexG
                 "#D3D3D3",
                 "#9ACD32",
                 "#FFB6C1")
-    }
-
-    private fun generateFonts(): List<Font> {
-        return fontHandler.getFontNames().map {
-            Font(it, FONT_DECORATION[ThreadLocalRandom.current().nextInt(FONT_DECORATION.size)], ThreadLocalRandom.current().nextInt(FONT_SIZE_MIN, FONT_SIZE_MAX))
-        }
-    }
-
-    private fun generateColors(): List<Color> {
-        return COLOR_CODE_LIST.map {
-            Color.decode(it)
-        }
     }
 
 }

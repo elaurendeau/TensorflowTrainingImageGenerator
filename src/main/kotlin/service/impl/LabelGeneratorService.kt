@@ -35,16 +35,17 @@ class LabelGeneratorService @Autowired constructor(val textManager: ITextManager
         }
 
         runBlocking {
-            val workerCount = 10
-            val waitGroup = AtomicInteger(workerCount)
-            for (n in 1..10) {
-                async(CommonPool) {
-                    while (!channel.isClosedForReceive) {
-                        val imageList = imageAppender.appendLabelsToImage(image, listOf(channel.receive()))
+            val jobList = List(100) {
+                launch(CommonPool) {
+                    for(pair in channel){
+                        val imageList = imageAppender.appendLabelsToImage(image, listOf(pair))
                         resultService.generateResult(FileRequest(path), imageList)
                     }
-                    waitGroup.addAndGet(-1)
-                }.await()
+                }
+            }
+
+            jobList.forEach {
+                it.join()
             }
         }
     }
