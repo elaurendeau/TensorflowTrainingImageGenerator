@@ -1,11 +1,9 @@
 package infrastructure.impl
 
-import com.rits.cloning.Cloner
 import domain.Position
 import domain.Text
 import infrastructure.IImageHandler
 import org.springframework.stereotype.Service
-import java.awt.Graphics
 import java.awt.image.BufferedImage
 
 @Service
@@ -15,7 +13,6 @@ class ImageHandler : IImageHandler {
         val graphics = copiedImage.graphics
         graphics.drawImage(image, 0, 0, null)
         graphics.dispose()
-
         return copiedImage
     }
 
@@ -23,7 +20,7 @@ class ImageHandler : IImageHandler {
         val graphicImage = image.createGraphics()
         graphicImage.font = text.font
         graphicImage.color = text.color
-        graphicImage.drawString(text.label , position.x, position.y)
+        graphicImage.drawString(text.label, position.x, position.y)
 
         return image;
     }

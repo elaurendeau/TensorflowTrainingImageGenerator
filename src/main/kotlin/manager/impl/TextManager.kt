@@ -16,6 +16,8 @@ open class TextManager @Autowired constructor(val regexGeneratorHandler: IRegexG
     val fontList: List<Font> by lazy {
         fontHandler.getFontNames().map {
             Font(it, FONT_DECORATION[ThreadLocalRandom.current().nextInt(FONT_DECORATION.size)], ThreadLocalRandom.current().nextInt(FONT_SIZE_MIN, FONT_SIZE_MAX))
+        }.filter {
+            !BANISHED_FONT_NAME.contains(it.fontName)
         }.toList()
     }
 
@@ -35,6 +37,7 @@ open class TextManager @Autowired constructor(val regexGeneratorHandler: IRegexG
         val FONT_DECORATION = listOf(Font.BOLD, Font.PLAIN, Font.ITALIC)
         val FONT_SIZE_MIN = 25
         val FONT_SIZE_MAX = 75
+        val BANISHED_FONT_NAME = listOf("Webdings", "Wingdings", "Consolas Bold Italic", "FontAwesome", "Segoe MDL2 Assets", "Marlett", "Franklin Gothic Medium Italic", "TeamViewer12", "Symbol")
         val COLOR_CODE_LIST = listOf("#FFA07A",
                 "#F0F8FF",
                 "#20B2AA",

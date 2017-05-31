@@ -8,6 +8,7 @@ import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import manager.IImageManager
+import manager.IPositionManager
 import manager.ITextManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,22 +17,28 @@ import service.ILabelGeneratorService
 import java.awt.image.BufferedImage
 
 @Service
-class LabelGeneratorService @Autowired constructor(val textManager: ITextManager, val imageAppender: IImageManager, val imageRepository: IImageRepository) : ILabelGeneratorService {
+class LabelGeneratorService @Autowired constructor(val textManager: ITextManager, val imageAppender: IImageManager, val imageRepository: IImageRepository, val positionManager: IPositionManager) : ILabelGeneratorService {
 
     override fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, path: String, request: Request) {
 
-        val position = Position(sizeX, sizeY)
         val channel = Channel<Pair<Text, Position>>(occurrence)
 
         launch(CommonPool) {
             repeat(occurrence) {
-                channel.send(Pair(textManager.generateTextFromRegex(regex), position))
+                try {
+                    val text = textManager.generateTextFromRegex(regex)
+                    val position = positionManager.generateRandomPosition(text, sizeX, sizeY)
+                    channel.send(Pair(text, position))
+                } catch (e: IllegalArgumentException) {
+//                 Skip this exception. If it is invalid, we won't process it.
+                    e.printStackTrace()
+                }
             }
             channel.close()
         }
 
         runBlocking {
-            val jobList = List(100_0) {
+            val jobList = List(1000) {
                 launch(CommonPool) {
                     for (pair in channel) {
                         val imageLabelPair = imageAppender.appendLabelToImage(image, pair)
