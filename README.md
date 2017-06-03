@@ -1,4 +1,4 @@
-"# TensorflowTrainingImageGenerator" 
+# TensorflowTrainingImageGenerator 
 
 Basic support to Rest added. Next step is to implement the URL call back.
 
