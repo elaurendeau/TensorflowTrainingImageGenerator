@@ -36,6 +36,9 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
     compile 'com.github.mifmif:Generex:1.0.0'
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.3.RELEASE'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
 }
 
 task wrapper(type: Wrapper) {
