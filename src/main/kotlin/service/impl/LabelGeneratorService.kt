@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage
 @Service
 class LabelGeneratorService @Autowired constructor(val textManager: ITextManager, val imageAppender: IImageManager, val imageRepository: IImageRepository, val positionManager: IPositionManager) : ILabelGeneratorService {
 
-    override fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, path: String, request: Request) {
+    override fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, request: Request) {
 
         val channel = Channel<Pair<Text, Position>>(occurrence)
 

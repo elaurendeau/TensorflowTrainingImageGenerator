@@ -13,7 +13,7 @@ open class ImageController @Autowired constructor(val labelGenerator: ILabelGene
     fun run(url: String, savePath: String, regex: String, occurrence: Int) {
         val image = ImageIO.read(URL(url))
 
-        labelGenerator.generateLabelByRegexAndCanvasDimension(image, regex, image.width, image.height, occurrence, savePath, FileRequest(savePath))
+        labelGenerator.generateLabelByRegexAndCanvasDimension(image, regex, image.width, image.height, occurrence, FileRequest(savePath))
 
     }
 }
