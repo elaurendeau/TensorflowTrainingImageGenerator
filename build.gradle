@@ -1,6 +1,8 @@
 apply plugin: "kotlin"
 apply plugin: 'application'
 
+version = '1.0'
+
 buildscript {
     ext.kotlin_version = '1.1.2'
 
@@ -45,13 +47,14 @@ task wrapper(type: Wrapper) {
     gradleVersion = "2.7"
 }
 
-jar {
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'application.ApplicationRest'
+        attributes 'Implementation-Title': 'Tensorflow training image generator',
+                'Implementation-Version': version,
+                'Main-Class': 'application.ApplicationRest'
     }
-
-    // This line of code recursively collects and copies all of a project's files
-    // and adds them to the JAR itself. One can extend this task, to skip certain
-    // files or particular types at will
+    baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
