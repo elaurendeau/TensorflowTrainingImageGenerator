@@ -1,7 +1,6 @@
 apply plugin: "kotlin"
 apply plugin: 'application'
-
-version = '1.0'
+apply plugin: 'docker'
 
 buildscript {
     ext.kotlin_version = '1.1.2'
@@ -12,8 +11,10 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath group: 'se.transmode.gradle', name: 'gradle-docker', version: '1.2'
     }
 }
+
 
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
@@ -32,13 +33,10 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile 'junit:junit:4.11'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    // https://mvnrepository.com/artifact/org.springframework/spring-context
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'
-// https://mvnrepository.com/artifact/org.springframework/spring-core
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
     compile 'com.github.mifmif:Generex:1.0.0'
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.3.RELEASE'
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
 }
@@ -47,14 +45,33 @@ task wrapper(type: Wrapper) {
     gradleVersion = "2.7"
 }
 
-//create a single Jar with all dependencies
 task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Tensorflow training image generator',
-                'Implementation-Version': version,
+                'Implementation-Version': '1.0',
                 'Main-Class': 'application.ApplicationRest'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+group = "elaurendeau"
+jar {
+    baseName = 'tensorflow-training-image-generator'
+    version =  '1.0.0'
+    mainClassName = 'application.ApplicationRest'
+}
+
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = true
+    applicationName = jar.baseName
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }
