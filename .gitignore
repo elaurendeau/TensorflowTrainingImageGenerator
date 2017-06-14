@@ -8,4 +8,4 @@ build/
 /build/*
 /test.png
 test.png
-
+*.hprof

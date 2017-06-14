@@ -39,28 +39,28 @@ dependencies {
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.3.RELEASE'
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = "2.7"
 }
 
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': 'Tensorflow training image generator',
-                'Implementation-Version': '1.0',
-                'Main-Class': 'application.ApplicationRest'
-    }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
 group = "elaurendeau"
+
+// Include dependent libraries in archive.
+mainClassName = "application.ApplicationRest"
+
 jar {
     baseName = 'tensorflow-training-image-generator'
-    version =  '1.0.0'
-    mainClassName = 'application.ApplicationRest'
+    version = '1.0.0'
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 

@@ -2,6 +2,8 @@ package controller
 
 import dto.ImageTestResultRequest
 import dto.RestResponse
+import enumeration.LoggingLevelEnumeration
+import infrastructure.ILoggerHandler
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,10 +17,11 @@ import javax.imageio.ImageIO
 
 @RequestMapping("/rest")
 @RestController
-open class TrainingRequestController @Autowired constructor(val labelGenerator: ILabelGeneratorService) {
+open class TrainingRequestController @Autowired constructor(val labelGenerator: ILabelGeneratorService, val logger: ILoggerHandler) {
 
     @RequestMapping(value = "/generate", method = arrayOf(RequestMethod.POST))
     fun generateTestResults(@RequestBody imageTestResultRequest: ImageTestResultRequest): Unit {
+        logger.log(LoggingLevelEnumeration.INFO, "Generating %s times %s".format(imageTestResultRequest.occurrence, imageTestResultRequest.regex))
         val image = ImageIO.read(URL(imageTestResultRequest.imagePath))
         async(CommonPool) {
             labelGenerator.generateLabelByRegexAndCanvasDimension(image, imageTestResultRequest.regex, image.width, image.height, imageTestResultRequest.occurrence, imageTestResultRequest.request)
