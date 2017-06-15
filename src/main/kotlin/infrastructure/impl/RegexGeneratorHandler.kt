@@ -18,10 +18,10 @@ class RegexGeneratorHandler : IRegexGeneratorHandler {
         val generex = Generex(regex)
         generex.setSeed(System.currentTimeMillis())
 
-        if(generex.isInfinite && occurrence == 0) {
+        if (generex.isInfinite && occurrence == 0) {
             throw StackOverflowError(EXCEPTION_MESSAGE_INFINITE_POSSIBILITIES.format(regex))
         }
 
-        return if(occurrence == 0) generex.allMatchedStrings else generex.getMatchedStrings(occurrence)
+        return if (occurrence == 0) generex.allMatchedStrings else generex.getMatchedStrings(occurrence)
     }
 }

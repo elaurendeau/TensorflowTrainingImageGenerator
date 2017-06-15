@@ -1,5 +1,5 @@
 package infrastructure
 
 interface IFontHandler {
-   fun getFontNames(): List<String>
+    fun getFontNames(): List<String>
 }

@@ -1,3 +1,3 @@
 package dto
 
-open class RestResponse(val imageBytes: ByteArray, val label: String)
+open class RestResponse(val imageBytes: String, val label: String)
