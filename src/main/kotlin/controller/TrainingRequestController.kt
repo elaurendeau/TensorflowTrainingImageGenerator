@@ -4,8 +4,6 @@ import dto.ImageTestResultRequest
 import dto.RestResponse
 import enumeration.LoggingLevelEnumeration
 import infrastructure.ILoggerHandler
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,9 +21,7 @@ open class TrainingRequestController @Autowired constructor(val labelGenerator: 
     fun generateTestResults(@RequestBody imageTestResultRequest: ImageTestResultRequest): Unit {
         logger.log(LoggingLevelEnumeration.INFO, "Generating %s times %s".format(imageTestResultRequest.occurrence, imageTestResultRequest.regex))
         val image = ImageIO.read(URL(imageTestResultRequest.imagePath))
-        async(CommonPool) {
-            labelGenerator.generateLabelByRegexAndCanvasDimension(image, imageTestResultRequest.regex, image.width, image.height, imageTestResultRequest.occurrence, imageTestResultRequest.request)
-        }
+        labelGenerator.generateLabelByRegexAndCanvasDimension(image, imageTestResultRequest.regex, image.width, image.height, imageTestResultRequest.occurrence, imageTestResultRequest.request)
     }
 
     @RequestMapping(value = "/responseReceiveTest", method = arrayOf(RequestMethod.POST))
