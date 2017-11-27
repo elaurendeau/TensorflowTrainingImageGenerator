@@ -4,5 +4,5 @@ import domain.FileRequest
 import java.awt.image.BufferedImage
 
 interface IFileRequestHandler {
-    fun persist(request: FileRequest, image: BufferedImage, label: String): Unit
+    fun persist(request: FileRequest,imageLabelPairList: List<Pair<BufferedImage, String>>): Unit
 }

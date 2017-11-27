@@ -21,12 +21,16 @@ open class TrainingRequestController @Autowired constructor(val labelGenerator: 
     fun generateTestResults(@RequestBody imageTestResultRequest: ImageTestResultRequest): Unit {
         logger.log(LoggingLevelEnumeration.INFO, "Generating %s times %s".format(imageTestResultRequest.occurrence, imageTestResultRequest.regex))
         val image = ImageIO.read(URL(imageTestResultRequest.imagePath))
-        labelGenerator.generateLabelByRegexAndCanvasDimension(image, imageTestResultRequest.regex, image.width, image.height, imageTestResultRequest.occurrence, imageTestResultRequest.request)
+        labelGenerator.generateLabelByRegexAndCanvasDimension(image, imageTestResultRequest.regex, image.width, image.height, imageTestResultRequest.occurrence, imageTestResultRequest.batchSize, imageTestResultRequest.request)
     }
+
 
     @RequestMapping(value = "/responseReceiveTest", method = arrayOf(RequestMethod.POST))
     fun getResponse(@RequestBody response: RestResponse): Unit {
-        println(response.label)
+        println("----- Batch size: " + response.imageLabelPairList.size)
+        response.imageLabelPairList.forEach {
+            println(it.second)
+        }
     }
 
 }

@@ -16,10 +16,10 @@ class ImageRepository @Autowired constructor(val fileRequestHandler: IFileReques
         val EXCEPTION_MESSAGE_INVALID_REQUEST_TYPE = "Invalid request type actual: %s"
     }
 
-    override fun persist(request: Request, image: BufferedImage, text: String) {
+    override fun persist(request: Request, imageLabelPairList: List<Pair<BufferedImage, String>>) {
         when (request) {
-            is FileRequest -> fileRequestHandler.persist(request, image, text)
-            is RestRequest -> restRequestHandler.send(request, image, text)
+            is FileRequest -> fileRequestHandler.persist(request, imageLabelPairList)
+            is RestRequest -> restRequestHandler.send(request, imageLabelPairList)
             else -> throw IllegalArgumentException(EXCEPTION_MESSAGE_INVALID_REQUEST_TYPE.format(request.javaClass.kotlin.toString()))
         }
     }

@@ -14,44 +14,46 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import repository.IImageRepository
 import service.ILabelGeneratorService
+import util.pmap
 import java.awt.image.BufferedImage
 
 @Service
 class LabelGeneratorService @Autowired constructor(val textManager: ITextManager, val imageAppender: IImageManager, val imageRepository: IImageRepository, val positionManager: IPositionManager) : ILabelGeneratorService {
 
-    override fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, request: Request) {
-
-        val channel = Channel<Pair<Text, Position>>(occurrence)
-
-        launch(CommonPool) {
-            repeat(occurrence) {
-                try {
-                    val text = textManager.generateTextFromRegex(regex)
-                    val position = positionManager.generateRandomPosition(text, sizeX, sizeY)
-                    channel.send(Pair(text, position))
-                } catch (e: IllegalArgumentException) {
+    /**
+     * Generate a single text and position based on a regex
+     * @param regex {@link String}
+     * @param sizeX {@link Int}
+     * @param sizeY {@link Int}
+     *
+     * @return {@link Pair}<{@link Text}, {@link Position}>
+     *
+     */
+    private fun generateSingleLabelAndPosition(regex: String, sizeX: Int, sizeY: Int): Pair<Text, Position> {
+//        TODO max retry scenario for infinite loop
+        try {
+            val text = textManager.generateTextFromRegex(regex)
+            val position = positionManager.generateRandomPosition(text, sizeX, sizeY)
+            return Pair(text, position)
+        } catch (e: IllegalArgumentException) {
 //                 Skip this exception. If it is invalid, we won't process it.
-                    e.printStackTrace()
-                }
-            }
-            channel.close()
-        }
-
-        runBlocking {
-            val jobList = List(1000) {
-                launch(CommonPool) {
-                    for (pair in channel) {
-                        val imageLabelPair = imageAppender.appendLabelToImage(image, pair)
-                        imageRepository.persist(request, imageLabelPair.first, imageLabelPair.second.label)
-                    }
-                }
-            }
-
-            jobList.forEach {
-                it.join()
-            }
+            e.printStackTrace()
+            return generateSingleLabelAndPosition(regex, sizeX, sizeY)
         }
     }
+
+    override fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, batchSize: Int, request: Request) {
+        (1 .. occurrence).toList().parallelStream().forEach {
+
+            val imageLabelPairList = (1 .. batchSize).toList().pmap {
+                val imagePair = imageAppender.appendLabelToImage(image, generateSingleLabelAndPosition(regex, sizeX, sizeY))
+                Pair(imagePair.first, imagePair.second.label)
+            }
+            imageRepository.persist(request, imageLabelPairList)
+
+        }
+    }
+
 }
 
 

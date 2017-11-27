@@ -10,10 +10,10 @@ import javax.imageio.ImageIO
 @Component
 open class ImageController @Autowired constructor(val labelGenerator: ILabelGeneratorService) {
 
-    fun run(url: String, savePath: String, regex: String, occurrence: Int) {
+    fun run(url: String, savePath: String, regex: String, occurrence: Int, batchSize: Int) {
         val image = ImageIO.read(URL(url))
 
-        labelGenerator.generateLabelByRegexAndCanvasDimension(image, regex, image.width, image.height, occurrence, FileRequest(savePath))
+        labelGenerator.generateLabelByRegexAndCanvasDimension(image, regex, image.width, image.height, occurrence, batchSize, FileRequest(savePath))
 
     }
 }

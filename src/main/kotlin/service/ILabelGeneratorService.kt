@@ -11,8 +11,9 @@ interface ILabelGeneratorService {
      * @param sizeX {@link Int} length of the canvas
      * @param sizeY {@link Int} height of the canvas
      * @param occurrence {@link Int} number of occurrence. 0 means all occurrences
+     * @param batchSize {@link Int} number of combination per occurrence
      *
      * @return {@link List}<{@link Pair}<{@link Text}, {@link Position}>>
      */
-    fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, request: Request): Unit
+    fun generateLabelByRegexAndCanvasDimension(image: BufferedImage, regex: String, sizeX: Int, sizeY: Int, occurrence: Int, batchSize: Int, request: Request): Unit
 }

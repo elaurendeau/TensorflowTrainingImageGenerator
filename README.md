@@ -23,6 +23,7 @@ POST - http://localhost:8080/rest/generate
 		"imagePath": "https://images2.onionstatic.com/clickhole/3564/7/original/600.jpg",
 		"regex": "[A-Z]{1,1}",
 		"occurrence": 5,
+		"batchSize": 100,
 		"request": {
 			"type": "rest",
 			"callback": "http://192.168.0.162:8091/rest/train"
