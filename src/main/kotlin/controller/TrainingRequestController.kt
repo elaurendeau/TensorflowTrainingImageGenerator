@@ -10,7 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import service.ILabelGeneratorService
+import java.awt.Color
+import java.io.ByteArrayInputStream
+import java.io.File
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.*
 import javax.imageio.ImageIO
 
 @RequestMapping("/rest")

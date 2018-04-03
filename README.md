@@ -29,5 +29,18 @@ POST - http://localhost:8080/rest/generate
 			"callback": "http://192.168.0.162:8091/rest/train"
 		}
 	}
+	
+	
+	{
+		"imagePath": "https://images2.onionstatic.com/clickhole/3564/7/original/600.jpg",
+		"regex": "[A-Z]{1,5}",
+		"occurrence": 1,
+		"batchSize": 10,
+		"request": {
+			"type": "file",
+			"path": "C:\\temp\\training",
+			"saveImages": false
+		}
+	}
 
 If you are running in a docker environnement, make sure you use docker links or your hostmachine IP for the callbacks.
