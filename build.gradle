@@ -3,7 +3,7 @@ apply plugin: 'application'
 apply plugin: 'docker'
 
 buildscript {
-    ext.kotlin_version = '1.1.2'
+    ext.kotlin_version = '1.2.31'
 
     repositories {
         mavenCentral()

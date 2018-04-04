@@ -24,6 +24,10 @@ class FileRequestHandler : IFileRequestHandler {
     }
 
     override fun persist(request: FileRequest, imageLabelPairList: List<Pair<BufferedImage, String>>) {
+
+        //must create directories  before writing
+        File(request.path).mkdirs()
+
         val fileName = UUID.randomUUID().toString()
         val path = Paths.get(request.path + File.separatorChar + fileName + FILE_EXTENSION)
 

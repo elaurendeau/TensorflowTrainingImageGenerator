@@ -27,6 +27,10 @@ class RestRequestHandler : IRestRequestHandler {
             Pair(imageRestFormat(it.first), it.second)
         })
 
-        template.postForObject(request.callback, response, String::class.java, HashMap<String, String>())
+        try {
+            template.postForEntity(request.callback, response, String::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

@@ -24,7 +24,7 @@ import javax.imageio.ImageIO
 @RestController
 open class TrainingRequestController @Autowired constructor(val labelGenerator: ILabelGeneratorService, val logger: ILoggerHandler) {
 
-    @RequestMapping(value = "/generate", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/generate"], method = arrayOf(RequestMethod.POST))
     fun generateTestResults(@RequestBody imageTestResultRequest: ImageTestResultRequest): Unit {
         logger.log(LoggingLevelEnumeration.INFO, "Generating %s times %s".format(imageTestResultRequest.occurrence, imageTestResultRequest.regex))
         val image = ImageIO.read(URL(imageTestResultRequest.imagePath))
@@ -32,7 +32,7 @@ open class TrainingRequestController @Autowired constructor(val labelGenerator: 
     }
 
 
-    @RequestMapping(value = "/responseReceiveTest", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/responseReceiveTest"], method = arrayOf(RequestMethod.POST))
     fun getResponse(@RequestBody response: RestResponse): Unit {
         println("----- Batch size: " + response.imageLabelPairList.size)
         response.imageLabelPairList.forEach {
